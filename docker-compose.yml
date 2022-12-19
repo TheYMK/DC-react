@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web:
+    build:
+      context: . # the location of the files we want to copy
+      dockerfile: 'Dockerfile.dev'
+    ports:
+      - "3000:3000"
+    volumes: # this sets a reference in the container to the files in local. This is so that we don't have to rebuild the entire shit everytime we make changes
+      - /usr/src/app/node_modules
+      - .:/usr/src/app
+  tests:
+    build:
+      context: .
+      dockerfile: 'Dockerfile.dev'
+    volumes:
+      - /usr/src/app/node_modules
+      - .:/usr/src/app
+    command: ["npm", "run", "test"]
